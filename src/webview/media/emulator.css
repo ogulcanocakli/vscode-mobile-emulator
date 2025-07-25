@@ -1,0 +1,224 @@
+/* Emulator Panel Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--vscode-font-family);
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.emulator-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--vscode-editor-background);
+}
+
+.emulator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--vscode-titleBar-activeBackground);
+    border-bottom: 1px solid var(--vscode-panel-border);
+    flex-shrink: 0;
+}
+
+.emulator-header h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--vscode-titleBar-activeForeground);
+}
+
+.emulator-controls {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.emulator-controls button {
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 3px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.emulator-controls button:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+.emulator-controls button:active {
+    background: var(--vscode-button-background);
+    transform: translateY(1px);
+}
+
+.emulator-screen-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--vscode-editor-background);
+    overflow: hidden;
+}
+
+.emulator-screen {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 9/16;
+    background-color: #000;
+    border-radius: 12px;
+    border: 2px solid var(--vscode-panel-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.emulator-screen.android {
+    border-radius: 8px;
+}
+
+.emulator-screen.ios {
+    border-radius: 24px;
+}
+
+.loading-message {
+    text-align: center;
+    color: var(--vscode-descriptionForeground);
+    padding: 20px;
+}
+
+.loading-message p {
+    margin: 8px 0;
+}
+
+.loading-details {
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.4;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--vscode-progressBar-background);
+    border-top: 3px solid var(--vscode-progressBar-foreground);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.emulator-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--vscode-statusBar-background);
+    border-top: 1px solid var(--vscode-panel-border);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.status-info {
+    color: var(--vscode-statusBar-foreground);
+}
+
+.connection-info {
+    color: var(--vscode-statusBar-foreground);
+    opacity: 0.8;
+}
+
+#statusText {
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .emulator-screen {
+        max-width: 300px;
+    }
+    
+    .emulator-controls {
+        flex-wrap: wrap;
+    }
+    
+    .emulator-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+}
+
+/* Screen content styles */
+.emulator-content {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.emulator-content.connected {
+    background: #000;
+}
+
+/* Touch interaction */
+.emulator-screen.touch-enabled {
+    cursor: pointer;
+}
+
+.emulator-screen.touch-enabled:active {
+    transform: scale(0.99);
+    transition: transform 0.1s;
+}
+
+/* Connection status indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-indicator.connecting {
+    background-color: var(--vscode-editorWarning-foreground);
+    animation: pulse 1.5s infinite;
+}
+
+.status-indicator.connected {
+    background-color: var(--vscode-terminal-ansiGreen);
+}
+
+.status-indicator.disconnected {
+    background-color: var(--vscode-editorError-foreground);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

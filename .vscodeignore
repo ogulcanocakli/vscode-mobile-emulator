@@ -1,0 +1,14 @@
+node_modules
+.vscode-test/
+src/
+*.vsix
+.DS_Store
+.nyc_output
+coverage/
+*.log
+tsconfig.json
+.eslintrc.js
+.gitignore
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

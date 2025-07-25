@@ -1,0 +1,155 @@
+{
+  "name": "vscode-mobile-emulator",
+  "displayName": "Mobile Emulator",
+  "description": "VSCode extension for running Android and iOS emulators in docked panels",
+  "version": "0.0.1",
+  "publisher": "mobile-emulator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ogulcanocakli/vscode-mobile-emulator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ogulcanocakli/vscode-mobile-emulator/issues"
+  },
+  "homepage": "https://github.com/ogulcanocakli/vscode-mobile-emulator#readme",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "android",
+    "ios", 
+    "emulator",
+    "simulator",
+    "mobile",
+    "development"
+  ],
+  "activationEvents": [
+    "onCommand:mobile-emulator.start",
+    "onView:mobileEmulatorDevices"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mobile-emulator.start",
+        "title": "Start Mobile Emulator",
+        "category": "Mobile Emulator"
+      },
+      {
+        "command": "mobile-emulator.stop",
+        "title": "Stop Mobile Emulator", 
+        "category": "Mobile Emulator"
+      },
+      {
+        "command": "mobile-emulator.refresh",
+        "title": "Refresh Devices",
+        "category": "Mobile Emulator",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "mobile-emulator.startAndroid",
+        "title": "Start Android Emulator",
+        "category": "Mobile Emulator"
+      },
+      {
+        "command": "mobile-emulator.startIOS",
+        "title": "Start iOS Simulator",
+        "category": "Mobile Emulator"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "mobileEmulatorDevices",
+          "name": "Mobile Devices",
+          "when": "true"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "mobile-emulator.refresh",
+          "when": "view == mobileEmulatorDevices",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "mobile-emulator.start",
+          "when": "view == mobileEmulatorDevices && viewItem == device",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "mobile-emulator.start",
+          "when": "true"
+        },
+        {
+          "command": "mobile-emulator.stop", 
+          "when": "true"
+        },
+        {
+          "command": "mobile-emulator.startAndroid",
+          "when": "true"
+        },
+        {
+          "command": "mobile-emulator.startIOS",
+          "when": "isMinDesktopMac"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Mobile Emulator",
+      "properties": {
+        "mobileEmulator.androidSdkPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Android SDK directory"
+        },
+        "mobileEmulator.autoDetectSdk": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect Android SDK path"
+        },
+        "mobileEmulator.enableIOS": {
+          "type": "boolean", 
+          "default": true,
+          "description": "Enable iOS Simulator support (macOS only)"
+        },
+        "mobileEmulator.emulatorWindowSize": {
+          "type": "string",
+          "enum": ["small", "medium", "large", "auto"],
+          "default": "medium",
+          "description": "Default emulator window size"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2"
+  }
+}

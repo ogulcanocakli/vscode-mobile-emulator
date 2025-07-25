@@ -3,6 +3,15 @@
   "displayName": "Mobile Emulator",
   "description": "VSCode extension for running Android and iOS emulators in docked panels",
   "version": "0.0.1",
+  "publisher": "mobile-emulator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ogulcanocakli/vscode-mobile-emulator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ogulcanocakli/vscode-mobile-emulator/issues"
+  },
+  "homepage": "https://github.com/ogulcanocakli/vscode-mobile-emulator#readme",
   "engines": {
     "vscode": "^1.74.0"
   },

@@ -204,7 +204,7 @@ src/
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## Changelog
 

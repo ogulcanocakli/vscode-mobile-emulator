@@ -17,14 +17,23 @@
     "commands": [
       {
         "command": "mobileEmulator.start",
-        "title": "Start Mobile Emulator"
+        "title": "Start Mobile Emulator",
+        "category": "Mobile Emulator"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "mobileEmulator.start",
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "test": "node test/test-adb.js"
   },
   "devDependencies": {
     "@types/vscode": "^1.74.0",

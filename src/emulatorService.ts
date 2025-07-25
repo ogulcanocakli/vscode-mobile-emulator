@@ -29,6 +29,9 @@ export class EmulatorService {
         
         // Start screen capture
         this.startScreenCapture();
+        
+        // Show success message
+        vscode.window.showInformationMessage(`Android Emulator connected: ${this.currentDeviceId}`);
     }
 
     private async getAvailableDevices(): Promise<string[]> {
@@ -36,6 +39,7 @@ export class EmulatorService {
             exec('adb devices', (error, stdout, stderr) => {
                 if (error) {
                     console.error('Error getting devices:', error);
+                    vscode.window.showErrorMessage('ADB not found. Please ensure Android SDK is installed and ADB is in your PATH.');
                     resolve([]);
                     return;
                 }
@@ -43,8 +47,12 @@ export class EmulatorService {
                 const lines = stdout.split('\n');
                 const devices = lines
                     .slice(1) // Skip header
-                    .filter(line => line.trim() && line.includes('device'))
+                    .filter(line => line.trim() && line.includes('device') && !line.includes('offline'))
                     .map(line => line.split('\t')[0]);
+                
+                if (devices.length === 0) {
+                    vscode.window.showWarningMessage('No Android devices found. Please start an emulator or connect a device.');
+                }
                 
                 resolve(devices);
             });
@@ -193,6 +201,17 @@ export class EmulatorService {
             font-size: 14px;
             color: #cccccc;
         }
+        
+        @keyframes touchFeedback {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -253,12 +272,36 @@ export class EmulatorService {
             const emulatorX = Math.round(x * scaleX);
             const emulatorY = Math.round(y * scaleY);
             
+            // Visual feedback
+            showTouchFeedback(x, y);
+            
             vscode.postMessage({
                 type: 'touch',
                 x: emulatorX,
                 y: emulatorY
             });
         });
+        
+        function showTouchFeedback(x, y) {
+            const feedback = document.createElement('div');
+            feedback.style.position = 'absolute';
+            feedback.style.left = (x - 10) + 'px';
+            feedback.style.top = (y - 10) + 'px';
+            feedback.style.width = '20px';
+            feedback.style.height = '20px';
+            feedback.style.borderRadius = '50%';
+            feedback.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            feedback.style.pointerEvents = 'none';
+            feedback.style.animation = 'touchFeedback 0.3s ease-out forwards';
+            
+            screenDisplay.appendChild(feedback);
+            
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.parentNode.removeChild(feedback);
+                }
+            }, 300);
+        }
         
         function sendKey(keyCode) {
             vscode.postMessage({
@@ -328,6 +371,7 @@ export class EmulatorService {
             exec(`adb -s ${this.currentDeviceId} exec-out screencap -p`, { encoding: 'buffer', maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
                 if (error) {
                     console.error('Screen capture error:', error);
+                    // Don't show error every time, just log it
                     resolve(null);
                     return;
                 }
@@ -336,6 +380,7 @@ export class EmulatorService {
                     const base64 = stdout.toString('base64');
                     resolve(base64);
                 } else {
+                    console.warn('No screen data received');
                     resolve(null);
                 }
             });
